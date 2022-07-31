@@ -9,26 +9,27 @@ var UserModel = require('../models/UserModel');
 SALT_WORK_FACTOR = 10;
 
 
-//Fonction d'ajout d'un user
-function addUser(req, res) {
+//--------- Ajout d'un user ---------//
 
-    let hashPassword = req.body.password; //va falloir hasher ça
+//On va définir comme asynchrone la fonction pour attendre la réponse du serveur afin de traiter le try & catch
+async function addUser (req, res) {
 
-    //On crée une instance de notre modèle pour le remplir
-    let user = new UserModel({
-        username: req.body.username,
-        email: req.body.email,
-        password: hashPassword
-    })
-    //On enregistre le user
-    user.save();
+    //Tous les éléments requis à la création du user
+    const {username, email, password} = req.body;
 
-    if (res.status(201) != "Created") {
-        console.log("erreur dans l'ajout du user")
-    } else {
-        console.log("l'user a été ajouté")
+    try {
+        const user = await UserModel.create({username, email, password});
+        //On renvois l'id de l'user qu'on vient de créer pour dire que ça a marché
+        res.status(201).json({user : user._id})
+    } catch(err) {
+        //On renvois l'erreur dans la console si il y a
+        res.status(200).send({ err })
     }
 }
+//---------------------------------//
+
+
+//----------- Modification d'un user -----------//
 
 //Fonction de modification d'un user
 function updateUser(req, res) {
@@ -43,18 +44,30 @@ function updateUser(req, res) {
     //l'await permet d'attendre que tous les traitements précédents soient terminés
     updatedUser.save();
 }
+//----------------------------------------------//
+
+
+//----------------------------------------------//
 
 //Fonction de recherche d'un User
 function searchUser (UserId) {
     let user = UserModel.findById({_id: UserId}).exec();
     return user;
 }
+//----------------------------------------------//
+
+
+//----------------------------------------------//
 
 //Login
 function loginUser() {
 
 }
 
+//----------------------------------------------//
+
+
+//On export toutes nos fonctions en tant que module afin de pouvoir les appeler dans le reste du code
 module.exports = {
     addUser,
     updateUser,
