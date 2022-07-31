@@ -11,12 +11,13 @@ SALT_WORK_FACTOR = 10;
 
 //--------- Ajout d'un user ---------//
 
-//On va définir comme asynchrone la fonction pour attendre la réponse du serveur afin de traiter le try & catch
+//On va définir comme asynchrone la fonction pour attendre la réponse de celle-ci
 async function addUser (req, res) {
 
     //Tous les éléments requis à la création du user
     const {username, email, password} = req.body;
 
+    //Permet d'éxecuter le code et récupérer une éventuelle exception
     try {
         const user = await UserModel.create({username, email, password});
         //On renvois l'id de l'user qu'on vient de créer pour dire que ça a marché
