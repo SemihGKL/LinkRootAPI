@@ -5,16 +5,17 @@ const router = require('express').Router();
 //On importe toutes nos méhodes provenant du controller sous forme de variables
 const  { 
     addUser,
-    updatedUser,
+    infoUser,
+    updateUser,
     loginUser
 } = require('../controllers/UserController.js')
 
 
-//route put asynchrone car pas immédiat (connexion db etc)
-router.put('/', async (req, res) => {
-    
-})
+//Ajout d'un user à /api/user/addUser
+router.post('/addUser',addUser);
 
-router.post('/addUser',addUser)
+//Affichage des infos d'un user
+router.get('/:id', infoUser);
+
 
 module.exports = router;

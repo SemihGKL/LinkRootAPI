@@ -41,4 +41,4 @@ UserSchema.pre("save", async function(next) {
 });
 
 //export du modele pour l'utiliser dans toute le code
-module.exports = mongoose.model('Users', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
