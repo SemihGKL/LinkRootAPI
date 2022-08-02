@@ -17,5 +17,6 @@ router.post('/addUser',addUser);
 //Affichage des infos d'un user
 router.get('/:id', infoUser);
 
+router.put('/:id', updateUser);
 
 module.exports = router;

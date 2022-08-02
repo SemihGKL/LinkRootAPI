@@ -28,7 +28,7 @@ async function addUser (req, res) {
 //--------- Affichage info d'un user ---------//
 
 //On va définir comme asynchrone la fonction pour attendre la réponse de celle-ci
-async function infoUser (req, res) {
+function infoUser (req, res) {
 
     const userId = req.params.id;
 
@@ -49,17 +49,24 @@ async function infoUser (req, res) {
 //----------- Modification d'un user -----------//
 
 //Fonction de modification d'un user
-function updateUser(req, res) {
-    //On va créer un requère et mettre un await pour lors de l'exec() attendre 
-    let updatedUser = searchUser(res.param);
+async function updateUser(req, res) {
+    const userId = req.params.id;
+    if(!objectId.isValid(userId)) {
+        return res.status(400).send("Id inconnu en base")
+    }
 
-    //Puis modifier ses datas
-    updatedUser.username = newUsername;
-    updatedUser.emai = newEmail;
-    updatedUser.password = newPassword;
 
-    //l'await permet d'attendre que tous les traitements précédents soient terminés
-    updatedUser.save();
+    try{
+        const filter = {_id : userId};
+        //avec await on va mettre en pause le traitement pour que le try puisse aboutir avant de passer à la suite
+        const updatedUser = await UserModel.findOneAndUpdate(
+            filter,
+            { username : req.body.username },
+        )
+        return res.status(201).json({ updatedUser : updatedUser.id})
+    } catch(err) {
+        return res.status(500).json({ message : err})
+    }
 }
 //----------------------------------------------//
 
