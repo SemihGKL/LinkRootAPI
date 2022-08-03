@@ -26,7 +26,6 @@ async function addUser (req, res) {
 //---------------------------------//
 
 //--------- Affichage info d'un user ---------//
-
 //On va définir comme asynchrone la fonction pour attendre la réponse de celle-ci
 function infoUser (req, res) {
 
@@ -47,8 +46,6 @@ function infoUser (req, res) {
 //-------------------------------------------//
 
 //----------- Modification d'un user -----------//
-
-//Fonction de modification d'un user
 async function updateUser(req, res) {
     const userId = req.params.id;
     if(!objectId.isValid(userId)) {
@@ -71,14 +68,28 @@ async function updateUser(req, res) {
 //----------------------------------------------//
 
 
-//----------------------------------------------//
+//-------------------Delete User ---------------------//
+async function deleteUser (req, res) {
+    const userId = new objectId(req.params.id);
+    if(!objectId.isValid(userId)) {
+        return res.status(400).send("Id inconnu en base")
+    }
 
-//Fonction de recherche d'un User
-function searchUser (UserId) {
-    let user = UserModel.findById({_id: UserId}).exec();
-    return user;
+    try {
+        const filter = {_id : userId};
+
+        await UserModel.findOneAndDelete(
+            filter
+        )            
+        .then((data) => {return res.send(data)})
+        .catch((err) => {return res.status(500).send({message: err})})
+        // res.status(200).json({ message : "suppression OK" });
+    } catch (err) {
+        return res.status(500).json({ message : err})
+    }
+
 }
-//----------------------------------------------//
+//----------------------------------------------------//
 
 
 //----------------------------------------------//
@@ -96,5 +107,6 @@ module.exports = {
     addUser,
     infoUser,
     updateUser,
+    deleteUser,
     loginUser
 }
