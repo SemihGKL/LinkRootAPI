@@ -36,7 +36,7 @@ function infoUser(req, res) {
   try {
     // console.log(userId);
     //On va récupérer l'user à travers l'ID
-    UserModel.findById(userId, (data) => {
+    UserModel.findById(userId, (err, data) => {
         console.log(data)
       //Si on ne retourne pas d'erreur on affiche la data (sans le pwd > data sensible)
       data ? res.send(data) : res.status(500).send("NO USER");
