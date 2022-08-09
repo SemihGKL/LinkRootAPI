@@ -12,13 +12,14 @@ const  {
 } = require('../controllers/UserController.js')
 
 
+
 //Ajout d'un user à /api/user/addUser
-router.post('/addUser',addUser);
+router.put('/', addUser);
 
 //Affichage des infos d'un user
 router.get('/:id', infoUser);
 
-router.put('/:id', updateUser);
+router.patch('/:id', updateUser);
 
 router.delete('/:id', deleteUser)
 
