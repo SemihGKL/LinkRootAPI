@@ -6,6 +6,7 @@ const { default: mongoose } = require('mongoose');
 
 const apiRoute = "/api"
 const userRoute = require('./routes/UserRoute');
+const linkRoute = require('./routes/linkRoute');
 
 //permet de charger tout ce qu'il y a dans le .env et le charger dans process.env
 dotenv.config();
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json())
 
 app.use(apiRoute + '/user', userRoute)
+app.use(apiRoute + '/link', linkRoute)
 
 //Connexion à la base de données MongoDB
 mongoose.connect(
